@@ -10,14 +10,21 @@ export const serviceFormSlice = createSlice({
   initialState,
   reducers: {
     changeServiceField: (state, action) => {
-      console.log(action);
+      console.log('changeServiceField', action.payload);
       const {name, value} = action.payload;
-      return {...state, [name]: value};
+      state[name] = value;
     },
+    setServiceForm: (state, action) => {
+      console.log('setServiceForm', action.payload);
+      return action.payload;
+    },
+    clearServiceForm: (state) => {
+      return initialState;
+    }
   }
 });
 
-export const { changeServiceField } = serviceFormSlice.actions;
+export const { changeServiceField, setServiceForm, clearServiceForm } = serviceFormSlice.actions;
 
 export const selectServiceForm = (state) => state.serviceForm;
 

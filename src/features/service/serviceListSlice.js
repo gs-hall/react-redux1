@@ -11,20 +11,27 @@ export const serviceListSlice = createSlice({
   name: 'serviceList',
   initialState,
   reducers: {
-    addService: (state, action) => {
-      const { name, price } = action.payload;
-      return [...state, { id: nanoid(), name, price: Number(price) }];
+    saveService: (state, action) => {
+      console.log('saveService', action.payload);
+      const { id, name, price } = action.payload;
+      if (id !== undefined) { // edit
+        const index = state.findIndex(item => item.id === id);
+        state[index] = { id, name, price: Number(price) };
+      } else { // new
+        state.push({ id: nanoid(), name, price: Number(price) });
+        // Thanks to redux we can mutate state!
+        //return [...state, { id: nanoid(), name, price: Number(price) }];
+      };
     },
+
     removeService: (state, action) => {
-      console.log('remove');
       const id = action.payload;
-      console.log('remove', id);
       return state.filter(service => service.id !== id);
     }
   }
 });
 
-export const { addService, removeService } = serviceListSlice.actions;
+export const { saveService, removeService } = serviceListSlice.actions;
 
 export const selectServiceList = (state) => state.serviceList;
 
